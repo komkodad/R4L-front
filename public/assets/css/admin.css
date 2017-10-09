@@ -1,0 +1,17 @@
+.navbar {
+  height: auto; }
+
+table {
+  margin-top: 0;
+  background-color: white;
+  border-collapse: collapse; }
+  table .table-header {
+    font-weight: bold; }
+  table .damage-bg {
+    background-color: "red"; }
+  table .fine-bg {
+    background-color: "blue"; }
+  table .unsure-bg {
+    background-color: "purple"; }
+
+/*# sourceMappingURL=admin.css.map */

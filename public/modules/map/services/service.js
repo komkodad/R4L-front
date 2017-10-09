@@ -1,12 +1,18 @@
 'use strict';
 
-App.factory('BadgeFactory', ['$rootScope', function($rootScope){
+App.factory('BadgeFactory', ['$rootScope', 'EventFactory', function($rootScope, EventFactory){
+
+  var count = EventFactory.getEventCount();
+
+  $rootScope.$on('event_update', function(){
+    count = EventFactory.getEventCount();
+  });
 
   var badgeCount = {
     damage           : 0,
     undamage         : 0,
     unknown          : 0,
-    remain           : 4075
+    remain           : count
   }
 
   var service = {};
@@ -41,7 +47,7 @@ App.factory('BadgeFactory', ['$rootScope', function($rootScope){
         damage           : 0,
         undamage         : 0,
         unknown          : 0,
-        remain           : 4075
+        remain           : count
       }
   }
 
@@ -73,11 +79,52 @@ App.factory('BadgeFactory', ['$rootScope', function($rootScope){
     this.broadcastUpdate();
   }
 
+  service.incCount = function incCount() {
+    // Needed?
+  }
+
   return service;
 }]);
 
+App.factory("PolygonRangeFactory", ["$rootScope", "$http", "UserFactory", function ($rootscope, $http, UserFactory) {
+  var service = {}, feature = {}
+
+  service.featureUpdate = function featureUpdate() {
+    $rootScope.$emit("Feature_update")
+  }
+
+  service.setFeature = function setFeature(object) {
+    feature = object
+    this.featureUpdate()
+  }
+
+  service.getGeoJson = function getGeoJson(path, bounds, username) {
+    var promise;
+    var polygons = {
+      "async" : function() {
+        if (!promise) {
+          promise = $http.get(path, {
+            params: bounds,
+            headers: {
+              "Content-Type": 'application/json',
+              "Authorization": 'Bearer ' + UserFactory.getUserData().data.token,
+              "x-username": username || UserFactory.getUserData().data.username
+            }
+          }).then(function then(data) {
+            return data;
+          });
+        }
+        return promise;
+      }
+    };
+    return polygons;
+  }
+
+  return service;
+}])
+
 App.factory('PolygonFactory', ["$rootScope", "$http", "UserFactory", function($rootScope, $http, UserFactory){
-  
+
   var service = {};
 
   var feature = {};
@@ -95,17 +142,23 @@ App.factory('PolygonFactory', ["$rootScope", "$http", "UserFactory", function($r
     return feature;
   }
 
-  service.getGeojson = function(path) {
+  service.getGeojson = function(path, idList, username) {
+    console.log(`param: ${username}\nfactory:${UserFactory.getUserData().data.username}`)
     var promise;
     var polygons = {
       async: function() {
-        if(!promise) {
-          promise = $http.get(path, {
+        if (!promise) {
+          promise = $http.get(path,
+          {
+            params: {
+              "ids" : (idList) ? idList.join(",") : null
+            },
             headers: {
               "Content-Type": 'application/json',
-              "Authorization": 'Bearer ' + UserFactory.getUserData().data.token
+              "Authorization": 'Bearer ' + UserFactory.getUserData().data.token,
+              "x-username": username || UserFactory.getUserData().data.username
             }
-          }).then(function(data){
+          }).then(function onFulfilled(data) {
             return data;
           });
         }
@@ -118,8 +171,10 @@ App.factory('PolygonFactory', ["$rootScope", "$http", "UserFactory", function($r
   service.savePolygon = function(path, data) {
     $http.post(path, data, { headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + UserFactory.getUserData().data.token
+      "Authorization": "Bearer " + UserFactory.getUserData().data.token,
+      "x-username" : UserFactory.getUserData().data.username
     }}).then(function(response){
+          console.log("Successfully save the vote for " + data.status);
           console.log(response);
       }, function(error){
         console.log(error);
@@ -128,4 +183,3 @@ App.factory('PolygonFactory', ["$rootScope", "$http", "UserFactory", function($r
 
   return service;
 }]);
-

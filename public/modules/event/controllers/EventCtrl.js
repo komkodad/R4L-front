@@ -2,24 +2,27 @@
 
 var EventController = App.controller('EventCtrl', [
 	'$scope',
-	'$http',
+	'$rootScope',
 	'$location',
 	'$mdDialog',
 	'EventFactory',
 	'PolygonFactory',
 	'UserFactory',
-	function($scope, $http, $location, $mdDialog, EventFactory, PolygonFactory, UserFactory){
+	'baseUrl',
+	function($scope, $rootScope, $location, $mdDialog, EventFactory, PolygonFactory, UserFactory, baseUrl){
 
-	  var events = EventFactory.getEvent();
-
-	  $scope.eventList = events.data;
+	  EventFactory.getEvent(`${ baseUrl }:3000/event`).async().then(function(events){
+	  	$scope.events = events;
+	  });
 
 	  $scope.isAdmin = UserFactory.getUserData().data.is_admin;
 
 	  $scope.pageCount = 1;
 
-	  $scope.enterMap = function(eventId){
+	  $scope.enterMap = function(eventId, eventCount, eventCentroid){
 	  	EventFactory.setEventId(eventId);
+	  	EventFactory.setEventCount(eventCount);
+	  	EventFactory.setEventCentroid(eventCentroid);
 	  	$location.path('/map');
 	  }
 
@@ -31,8 +34,18 @@ var EventController = App.controller('EventCtrl', [
 	  		clickOutsideToClose: true
 	  	})
 	  	.then(function(){
-	  		alert('Successfully create a event');
+	  		console.log('Successfully create a event');
 	  	});
+	  }
+
+	  $scope.delEvent = function(eventId){
+	  	EventFactory.delEvent(eventId);
+	  }
+
+	  $scope.enterData = function(eventId){
+		console.log(`Event id: ${ eventId }`)
+	  	EventFactory.setEventId(eventId);
+	  	$location.path('/admin');
 	  }
 
 	  $scope.signOut = function(){

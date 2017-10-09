@@ -1,11 +1,25 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
+@import url(https://fonts.googleapis.com/css?family=Raleway);
 body {
+  overflow-x: hidden;
+  color: #212121;
   margin: 0;
   padding: 0;
   height: auto;
-  background-color: #121211;
   -webkit-font-smoothing: antialiased;
-  font: normal 14px Roboto,arial,sans-serif; }
+  font: normal 14px Raleway,arial,sans-serif;
+  background-image: url(/assets/img/map.jpg);
+  background-size: cover; }
+
+@keyframes slide {
+  0% {
+    background-position: 0% 0%; }
+  100% {
+    background-position: 2042px 0%; } }
+#toolbar {
+  background-color: white;
+  color: #2196F3;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); }
 
 .login-container {
   padding-top: 1%;
@@ -15,26 +29,23 @@ body {
   width: 80%; }
 
 .form-login {
-  background-color: #2B2B2B;
-  color: white;
+  color: #2196F3;
   padding-top: 10px;
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
-  border-radius: 15px;
-  border-color: #d2d2d2;
   border-width: 5px;
   margin-left: 18%;
   width: 60%; }
 
 h4 {
-  border: 0 solid #fff;
   border-bottom-width: 1px;
   padding-bottom: 10px;
   text-align: center; }
 
-.form-control {
-  border-radius: 10px; }
+.no-margin {
+  display: block;
+  margin: 0; }
 
 .wrapper {
   text-align: center; }
@@ -44,37 +55,29 @@ h4 {
   width: 60%; }
 
 .admin-btn {
-  background-color: #444;
-  color: gray;
-  border-radius: 20px 20px 20px;
   font-size: 14px; }
 
 .admin-btn:not([disabled]):hover {
-  background-color: white;
+  background-color: #ff00de;
   color: black;
   font-weight: bold; }
 
 .login-btn {
-  background-color: green;
-  color: white;
-  border-radius: 20px 20px 20px; }
+  background-color: #2196F3 !important;
+  color: #FFFFFF !important;
+  overflow: visible !important; }
 
 .login-btn:not([disabled]):hover {
-  background-color: #CCFF00;
-  color: black;
+  background-color: #BBDEFB !important;
+  color: #1976D2 !important;
   font-weight: bold; }
 
 .navbar {
-  margin-bottom: 8%;
-  background-color: #121211; }
-  .navbar md-toolbar {
-    background-color: #2B2B2B;
-    border-radius: 5px 5px 5px 5px; }
+  color: #BBDEFB;
+  margin-bottom: 4%; }
   .navbar .logo-title {
     font-weight: bold;
-    font-style: italic;
-    font-size: 24px;
-    text-shadow: 1px 1px #444; }
+    font-size: 24px; }
 
 @media screen and (max-width: 768px) {
   .group-btn a {
@@ -88,9 +91,6 @@ h4 {
     .navbar .logo-title {
       font-size: 16px; }
     .navbar .admin-btn {
-      font-size: 12px;
-      border-radius: 20px 0 0 20px; }
-    .navbar .login-btn {
-      border-radius: 20px 0 0 20px; } }
+      font-size: 12px; } }
 
 /*# sourceMappingURL=signin.css.map */

@@ -10,6 +10,13 @@ var App = window.App = angular.module('R4LApp', [
 	]
 );
 
+
+// Set base URL 
+App.value("baseUrl", (function getBaseUrl(){
+	var baseUrl = "http://" + window.location.hostname
+	return baseUrl
+})())
+
 // turn off leaflet login
 App.config(function($logProvider){
   	$logProvider.debugEnabled(false);
@@ -48,6 +55,13 @@ App.config(["$routeProvider", function($routeProvider){
 			},
 			templateUrl : "/modules/user/views/Login.html",
 			controller  : "LoginCtrl"
+		}).
+		when('/mod', {
+			resolve : {
+				"check" : notLoggedIn
+			},
+			"templateUrl" : "modules/user/views/Login_modified.html",
+			"controller" : "LoginCtrlMod"
 		}).
 		when('/signup', {
 			resolve: {

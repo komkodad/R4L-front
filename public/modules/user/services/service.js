@@ -1,7 +1,7 @@
 'use strict';
 
-App.factory('UserFactory', ['$rootScope', '$http', '$resource', "$location", "$cookieStore", "EventFactory",
-  function($rootScope, $http, $resource, $location, $cookieStore, EventFactory){
+App.factory('UserFactory', ['$rootScope', '$http', '$mdDialog','$resource', "$location", "$cookieStore", "baseUrl",
+  function($rootScope, $http, $mdDialog, $resource, $location, $cookieStore, baseUrl){
 
     var service = {}
 
@@ -15,55 +15,61 @@ App.factory('UserFactory', ['$rootScope', '$http', '$resource', "$location", "$c
 
     //create
     service.userCreate = function(data){
-    	$http.post('http://52.8.54.187:3000/user/create', data).then(function(response){
+    	$http.post(`${ baseUrl }:3000/user/create`, data).then(function(response){
          $cookieStore.put('userData', response);
          var userData = $cookieStore.get('userData');
          if(userData.data.success){
             //enter the event page
-            $http.get('http://52.8.54.187:3000/event', {
-              headers: {
-                "Authorization": 'Bearer ' + userData.data.token
-              }
-            }).then(function(response){
-              $location.path('/events');
-              EventFactory.setEvent(response);
-              console.log(response);
+            $location.path('/events');
+         }else{
+            $mdDialog.show(
+              $mdDialog.alert()
+                .parent(angular.element(document.querySelector('.register-container')))
+                .clickOutsideToClose(true)
+                .title('Oops!')
+                .textContent('This user has already existed. Please try again!')
+                .ok('Try again!')
+            ).then(function(){
+              location.reload();
             });
          }
       }, function(error){
         console.log(error);
     	});
-      this.update();
     }
 
     //login
     service.userLogin = function(data){
-    	$http.post('http://52.8.54.187:3000/user/login', data).then(function(response){
+    	$http.post(`${ baseUrl }:3000/user/login`, data).then(function(response){
           $cookieStore.put('userData', response);
           var userData = $cookieStore.get('userData');
-          console.log(userData);
           if(userData.data.success){
             //enter the event page
-            $http.get('http://52.8.54.187:3000/event', {
-              headers: {
-                "Authorization": 'Bearer ' + userData.data.token
-              }
-            }).then(function(response){
-              $location.path('/events');
-              EventFactory.setEvent(response);
-              console.log(response);
+            $location.path('/events');
+          }else{
+            $mdDialog.show(
+              $mdDialog.alert()
+                .parent(angular.element(document.querySelector('.login-container')))
+                .clickOutsideToClose(true)
+                .title('Oops!')
+                .textContent('Invalid username/password. Please try again!')
+                .ok('Try again!')
+            ).then(function(){
+              location.reload();
             });
+ 
           }
     	}, function(error){
         console.log(error);
     	});
-      this.update();
     }
 
     //signout
     service.signout = function(){
       $cookieStore.remove('userData');
       $cookieStore.remove('eventId');
+      $cookieStore.remove('eventCentroid');
+      $cookieStore.remove('polygonCount');
     }
 
     return service;

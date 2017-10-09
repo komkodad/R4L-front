@@ -1,21 +1,13 @@
 .jumbotron {
-  border: 1px solid black;
-  border-radius: 15px;
-  background-color: #2B2B2B;
+  background-color: rgba(0, 0, 0, 0.63);
   padding-top: 1%;
-  margin-top: 1%;
-  margin-bottom: 1%;
-  color: #fff;
+  color: #FFFFFF;
   text-align: center; }
   .jumbotron #menu-signout {
     margin-left: 85%;
     margin-bottom: 1%; }
   .jumbotron #create-btn {
     margin-right: 85%; }
-
-md-card, .md-subhead > p {
-  background-color: #2B2B2B;
-  color: white; }
 
 .card, .md-padding {
   background-color: #121211; }
@@ -27,7 +19,7 @@ md-card, .md-subhead > p {
 .md-btn {
   background-color: green;
   color: white;
-  border-radius: 20px 20px 20px; }
+  border-radius: 5% 5% 5%; }
 
 .md-btn:not([disabled]):hover {
   background-color: #CCFF00;
@@ -35,14 +27,8 @@ md-card, .md-subhead > p {
   font-weight: bold; }
 
 .next-page-btn, .prev-page-btn {
-  background-color: #4d2e00;
-  color: white; }
-
-.next-page-btn {
-  border-radius: 0 20px 20px 0; }
-
-.prev-page-btn {
-  border-radius: 20px 0 0 20px; }
+  background-color: #C4C4C4;
+  color: black; }
 
 .next-page-btn:not([disabled]):hover, .prev-page-btn:not([disabled]):hover {
   background-color: #fff;
@@ -53,10 +39,19 @@ md-card, .md-subhead > p {
   background-color: #333;
   color: #111; }
 
+.del-btn {
+  background-color: darkred;
+  color: white;
+  border-radius: 5% 5% 5%; }
+
+.del-btn:not([disabled]):hover {
+  background-color: #780009;
+  font-weight: bold; }
+
 .signout-btn {
   background-color: #CC6600;
   color: white;
-  border-radius: 10px 10px 10px 10px; }
+  border-radius: 5% 5% 5%; }
 
 .signout-btn:not([disabled]):hover {
   background-color: #660000;
